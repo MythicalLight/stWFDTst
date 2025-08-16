@@ -1,0 +1,11 @@
+namespace Stride.Rendering.Images
+{
+    effect FogVolumeFX
+    {
+        // Use code from the shadow receiver appropriate for the light this lightshaft is rendered for
+        using params FogVolumeKeys;
+        //mixin compose lightGroup = (LightShaftsEffectKeys.LightGroup);
+
+        mixin FogVolumeShader<FogVolumeKeys.SampleCount>;
+    };
+}

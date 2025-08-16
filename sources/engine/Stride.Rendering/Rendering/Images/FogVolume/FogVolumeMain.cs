@@ -50,6 +50,20 @@ namespace Stride.Rendering.Images
 
         private ImageEffectShader applyFogShader;
 
+
+
+        /// <summary>
+        /// Size of the orthographic projection used to find minimum bounding volume distance behind the camera
+        /// </summary>
+        private const float BackSideOrthographicSize = 0.0001f;
+
+        private DynamicEffectInstance minmaxVolumeEffectShader; // from lightshafts
+        private EffectBytecode previousMinmaxEffectBytecode;
+        private MutablePipelineState[] minmaxPipelineStates = new MutablePipelineState[2];
+
+        private RenderFogVolumeBoundingVolume[] singleBoundingVolume = new RenderFogVolumeBoundingVolume[1];
+
+
         private List<RenderFogVolume> fogVolumes; // TODO
 
 
@@ -58,9 +72,12 @@ namespace Stride.Rendering.Images
             base.InitializeCore();
 
 
+            minmaxVolumeEffectShader = new DynamicEffectInstance("VolumeMinMaxShader");
+            minmaxVolumeEffectShader.Initialize(Context.Services);
+
 
             // Additive blending shader
-            applyFogShader = ToLoadAndUnload(new ImageEffectShader("FogVolumeEffect"));
+            applyFogShader = ToLoadAndUnload(new ImageEffectShader("FogVolumeFX"));
             applyFogShader.BlendState = new BlendStateDescription(Blend.One, Blend.One);
 
 
@@ -76,7 +93,8 @@ namespace Stride.Rendering.Images
         protected override void Destroy()
         {
             base.Destroy();
-            //minmaxVolumeEffectShader.Dispose();
+            minmaxVolumeEffectShader.Dispose();
+            
         }
 
         public void Collect(RenderContext context)
@@ -103,6 +121,9 @@ namespace Stride.Rendering.Images
             var depthInput = GetSafeInput(0);
 
 
+            // Create a min/max buffer generated from scene bounding volumes
+            var targetBoundingBoxBufferSize = new Size2(Math.Max(1, depthInput.Width / BoundingVolumeBufferDownsampleLevel), Math.Max(1, depthInput.Height / BoundingVolumeBufferDownsampleLevel));
+            var boundingBoxBuffer = NewScopedRenderTarget2D(targetBoundingBoxBufferSize.Width, targetBoundingBoxBufferSize.Height, PixelFormat.R32G32_Float);
 
             // Buffer that holds the minimum distance in case of being inside the bounding box
             var backSideRaycastBuffer = NewScopedRenderTarget2D(1, 1, PixelFormat.R32G32_Float);
@@ -134,7 +155,14 @@ namespace Stride.Rendering.Images
             foreach (var fVolume in fogVolumes)
             {
 
-                fogVolumeParams.Set(LightShaftsEffectKeys.SampleCount, fVolume.SampleCount);
+                fogVolumeParams.Set(FogVolumeKeys.SampleCount, fVolume.SampleCount);
+
+
+
+                // Generate list of bounding volume (either all or one by one depending on SeparateBoundingVolumes)
+                var currentBoundingVolumes = (fVolume.SeparateBoundingVolumes) ? singleBoundingVolume : fVolume.BoundingVolumes;
+                if (fVolume.SeparateBoundingVolumes)
+                    singleBoundingVolume[0] = fVolume.BoundingVolumes[0];
 
 
 
@@ -145,6 +173,16 @@ namespace Stride.Rendering.Images
 
                     context.CommandList.Clear(backSideRaycastBuffer, new Color4(1.0f, 0.0f, 0.0f, 0.0f));
                     context.CommandList.SetRenderTargetAndViewport(null, backSideRaycastBuffer);
+
+                    // If nothing visible, skip second part
+                    if (!DrawBoundingVolumeMinMax(context, currentBoundingVolumes))
+                        continue;
+
+                    context.CommandList.Clear(backSideRaycastBuffer, new Color4(1.0f, 0.0f, 0.0f, 0.0f));
+                    context.CommandList.SetRenderTargetAndViewport(null, backSideRaycastBuffer);
+
+                    // If nothing visible, skip second part
+                    DrawBoundingVolumeBackside(context, currentBoundingVolumes);
 
                 }
 
@@ -168,7 +206,12 @@ namespace Stride.Rendering.Images
                     throw new ArgumentOutOfRangeException(nameof(fVolume.SampleCount));
 
 
-                fogVolumeEffectShader.SetInput(10, backSideRaycastBuffer); // necessary? ###
+                
+
+                fogVolumeEffectShader.SetInput(0, boundingBoxBuffer);
+                fogVolumeEffectShader.SetInput(1, backSideRaycastBuffer);
+
+                DrawFogVolume(context, fVolume);
 
 
             }
@@ -187,6 +230,137 @@ namespace Stride.Rendering.Images
             SetOutput(output);
             Draw(drawContext);
         }
+
+
+
+        private void DrawFogVolume(RenderDrawContext context, RenderFogVolume fogVolume)
+        {
+            fogVolumeEffectShader.Parameters.Set(LightShaftsShaderKeys.DensityFactor, fogVolume.DensityValue);
+
+            fogVolumeEffectShader.Draw(context, "Fog volume");
+        }
+
+
+
+
+        //This part is integrated from Lightshafts code (Bounding volume)
+        private bool DrawBoundingVolumeMinMax(RenderDrawContext context, IReadOnlyList<RenderFogVolumeBoundingVolume> boundingVolumes)
+        {
+            return DrawBoundingVolumes(context, boundingVolumes, context.RenderContext.RenderView.ViewProjection);
+        }
+
+        private void DrawBoundingVolumeBackside(RenderDrawContext context, IReadOnlyList<RenderFogVolumeBoundingVolume> boundingVolumes)
+        {
+            float backSideMaximumDistance = context.RenderContext.RenderView.FarClipPlane;
+            float backSideMinimumDistance = -context.RenderContext.RenderView.NearClipPlane;
+            Matrix backSideProjection = context.RenderContext.RenderView.View * Matrix.Scaling(1, 1, -1) * Matrix.OrthoRH(BackSideOrthographicSize, BackSideOrthographicSize, backSideMinimumDistance, backSideMaximumDistance);
+            DrawBoundingVolumes(context, boundingVolumes, backSideProjection);
+        }
+
+        private bool DrawBoundingVolumes(RenderDrawContext context, IReadOnlyList<RenderFogVolumeBoundingVolume> boundingVolumes, Matrix viewProjection)
+        {
+            var commandList = context.CommandList;
+
+            bool effectUpdated = minmaxVolumeEffectShader.UpdateEffect(GraphicsDevice);
+            if (minmaxVolumeEffectShader.Effect == null)
+                return false;
+
+            var needEffectUpdate = effectUpdated || previousMinmaxEffectBytecode != minmaxVolumeEffectShader.Effect.Bytecode;
+            bool visibleMeshes = false;
+
+            for (int pass = 0; pass < 2; ++pass)
+            {
+                var minmaxPipelineState = minmaxPipelineStates[pass];
+
+                bool pipelineDirty = false;
+                if (needEffectUpdate)
+                {
+                    // The EffectInstance might have been updated from outside
+                    previousMinmaxEffectBytecode = minmaxVolumeEffectShader.Effect.Bytecode;
+
+                    minmaxPipelineState.State.RootSignature = minmaxVolumeEffectShader.RootSignature;
+                    minmaxPipelineState.State.EffectBytecode = minmaxVolumeEffectShader.Effect.Bytecode;
+
+                    minmaxPipelineState.State.Output.RenderTargetCount = 1;
+                    minmaxPipelineState.State.Output.RenderTargetFormat0 = commandList.RenderTarget.Format;
+                    pipelineDirty = true;
+                }
+
+                MeshDraw currentDraw = null;
+                var frustum = new BoundingFrustum(ref viewProjection);
+                foreach (var volume in boundingVolumes)
+                {
+                    if (volume.Model == null)
+                        continue;
+
+                    // Update parameters for the minmax shader
+                    Matrix worldViewProjection = Matrix.Multiply(volume.World, viewProjection);
+                    minmaxVolumeEffectShader.Parameters.Set(VolumeMinMaxShaderKeys.WorldViewProjection, ref worldViewProjection);
+
+                    foreach (var mesh in volume.Model.Meshes)
+                    {
+                        // Frustum culling
+                        BoundingBox meshBoundingBox;
+                        Matrix world = volume.World;
+                        BoundingBox.Transform(ref mesh.BoundingBox, ref world, out meshBoundingBox);
+                        var boundingBoxExt = new BoundingBoxExt(meshBoundingBox);
+                        if (boundingBoxExt.Extent != Vector3.Zero
+                            && !VisibilityGroup.FrustumContainsBox(ref frustum, ref boundingBoxExt, true))
+                            continue;
+
+                        visibleMeshes = true;
+
+                        var draw = mesh.Draw;
+
+                        if (currentDraw != draw)
+                        {
+                            if (minmaxPipelineState.State.PrimitiveType != draw.PrimitiveType)
+                            {
+                                minmaxPipelineState.State.PrimitiveType = draw.PrimitiveType;
+                                pipelineDirty = true;
+                            }
+
+                            var inputElements = draw.VertexBuffers.CreateInputElements();
+                            if (inputElements.ComputeHash() != minmaxPipelineState.State.InputElements.ComputeHash())
+                            {
+                                minmaxPipelineState.State.InputElements = inputElements;
+                                pipelineDirty = true;
+                            }
+
+                            // Update mesh
+                            for (int i = 0; i < draw.VertexBuffers.Length; i++)
+                            {
+                                var vertexBuffer = draw.VertexBuffers[i];
+                                commandList.SetVertexBuffer(i, vertexBuffer.Buffer, vertexBuffer.Offset, vertexBuffer.Stride);
+                            }
+                            if (draw.IndexBuffer != null)
+                                commandList.SetIndexBuffer(draw.IndexBuffer.Buffer, draw.IndexBuffer.Offset, draw.IndexBuffer.Is32Bit);
+                            currentDraw = draw;
+                        }
+
+                        if (pipelineDirty)
+                        {
+                            minmaxPipelineState.Update();
+                            pipelineDirty = false;
+                        }
+
+                        context.CommandList.SetPipelineState(minmaxPipelineState.CurrentState);
+
+                        minmaxVolumeEffectShader.Apply(context.GraphicsContext);
+
+                        // Draw
+                        if (currentDraw.IndexBuffer == null)
+                            commandList.Draw(currentDraw.DrawCount, currentDraw.StartLocation);
+                        else
+                            commandList.DrawIndexed(currentDraw.DrawCount, currentDraw.StartLocation);
+                    }
+                }
+            }
+
+            return visibleMeshes;
+        }
+
+
 
     }
 }

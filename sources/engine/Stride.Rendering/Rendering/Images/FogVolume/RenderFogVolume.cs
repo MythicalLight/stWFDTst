@@ -9,13 +9,15 @@ namespace Stride.Rendering.Images
        
         public int SampleCount;
         public float DensityValue;
+        public IReadOnlyList<RenderFogVolumeBoundingVolume> BoundingVolumes;
+        public bool SeparateBoundingVolumes;
         //public IReadOnlyList<RenderLightShaftBoundingVolume> BoundingVolumes;
         //public bool SeparateBoundingVolumes;
     }
 
-    //public struct RenderLightShaftBoundingVolume
-    //{
-    //    public Matrix World;
-    //    public Model Model;
-    //}
+    public struct RenderFogVolumeBoundingVolume
+    {
+        public Matrix World;
+        public Model Model;
+    }
 }

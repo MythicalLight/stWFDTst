@@ -1,0 +1,25 @@
+namespace Stride.Rendering.Images
+{
+    shader FogVolumeShader<int SampleCount> : ImageEffectShader, PostEffectBoundingRay<SampleCount>, LightStream, NormalStream
+    {
+        //stage compose DirectLightGroup lightGroup;
+
+        cbuffer PerFrame
+        {
+            stage float DensityValue;
+        };
+		
+		stage float3 FogColor;
+        stage Texture2D DepthTexture;
+
+        override float3 ComputeColorIn(float4 positionWS, float stepSize, int stepIndex)
+        {
+            float4 color = Texture0.Sample(PointSampler, streams.TexCoord); // access the color view texture
+            float z_b = DepthTexture.SampleLevel(PointSampler, streams.TexCoord, 0.0).x;
+			
+			return float3(0,0,0); // to debug and see if it works
+
+            // return DensityFactor * stepSize * shadow * atten;
+        }
+    };
+}

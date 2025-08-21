@@ -69,7 +69,8 @@ namespace Stride.Animations
             var keyFrames = channel.Curve.KeyFrames;
 
             var keyFramesItems = CollectionsMarshal.AsSpan(keyFrames);
-            var keyFramesCount = keyFrames.Count;
+            //var keyFramesCount = keyFrames.Count; //.Count
+            var keyFramesCount = keyFramesItems.Length;
 
             if (newTime > currentTime)
             {

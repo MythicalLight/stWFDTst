@@ -6,6 +6,7 @@ using Stride.Core.Collections;
 using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Rendering.Shadows;
+using System.Collections.Generic;
 using Stride.Shaders;
 
 namespace Stride.Rendering.Lights
@@ -31,7 +32,7 @@ namespace Stride.Rendering.Lights
             lightShaderGroup.Reset();
         }
 
-        public override void SetViews(FastList<RenderView> views)
+        public override void SetViews(List<RenderView> views)
         {
             base.SetViews(views);
 

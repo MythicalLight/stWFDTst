@@ -5,6 +5,8 @@ using System;
 using Stride.Core.Collections;
 using Stride.Core.Mathematics;
 using Stride.Updater;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Stride.Animations
 {
@@ -66,7 +68,7 @@ namespace Stride.Animations
             var currentIndex = channel.CurrentIndex;
             var keyFrames = channel.Curve.KeyFrames;
 
-            var keyFramesItems = keyFrames.Items;
+            var keyFramesItems = CollectionsMarshal.AsSpan(keyFrames);
             var keyFramesCount = keyFrames.Count;
 
             if (newTime > currentTime)
@@ -139,7 +141,7 @@ namespace Stride.Animations
             var keyFrames = channel.Curve.KeyFrames;
             var currentIndex = channel.CurrentIndex;
 
-            objects[channel.Offset].Value = keyFrames.Items[currentIndex].Value;
+            objects[channel.Offset].Value = CollectionsMarshal.AsSpan(keyFrames)[currentIndex].Value;
         }
     }
 }

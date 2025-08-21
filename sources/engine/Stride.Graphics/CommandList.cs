@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors (https://dotnetfoundation.org/ & https://stride3d.net) and Silicon Studio Corp. (https://www.siliconstudio.co.jp)
 // Distributed under the MIT license. See the LICENSE.md file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using Stride.Core.Mathematics;
 
@@ -287,9 +288,9 @@ namespace Stride.Graphics
         ///     <p>Bind one or more render targets atomically and the depth-stencil buffer to the output-merger stage. See <see cref="Textures+and+render+targets"/> to learn how to use it.</p>
         /// </summary>
         /// <param name="renderTargetViews">A set of render target views to bind.</param>
-        public void SetRenderTargets(Texture[] renderTargetViews)
+        public void SetRenderTargets(Span<Texture> renderTargetViews) //Texture[]
         {
-            SetRenderTargets(null, renderTargetViews);
+            SetRenderTargets(null, renderTargetViews.ToArray());
         }
         
         /// <summary>
@@ -299,7 +300,7 @@ namespace Stride.Graphics
         /// <param name="renderTargetViewCount">The number of render target in <paramref name="renderTargetViews"/>.</param>
         /// <param name="renderTargetViews">A set of render target views to bind.</param>
         /// <exception cref="System.ArgumentNullException">renderTargetViews</exception>
-        public void SetRenderTargets(Texture depthStencilView, int renderTargetViewCount, Texture[] renderTargetViews)
+        public void SetRenderTargets(Texture depthStencilView, int renderTargetViewCount, Span<Texture> renderTargetViews) //Texture[]
         {
             depthStencilBuffer = depthStencilView;
 

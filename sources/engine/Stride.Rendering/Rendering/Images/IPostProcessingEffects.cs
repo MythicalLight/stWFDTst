@@ -11,7 +11,7 @@ namespace Stride.Rendering.Images
     {
         void Collect(RenderContext context);
 
-        void Draw(RenderDrawContext drawContext, RenderOutputValidator outputValidator, Texture[] inputs, Texture inputDepthStencil, Texture outputTarget);
+        void Draw(RenderDrawContext drawContext, RenderOutputValidator outputValidator, Span<Texture> inputs, Texture inputDepthStencil, Texture outputTarget); //Texture[]
 
         bool RequiresVelocityBuffer { get; }
 

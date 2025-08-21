@@ -18,6 +18,7 @@ using Stride.Engine;
 using Stride.Graphics;
 using Stride.Rendering.LightProbes;
 using Stride.Core.Presentation.ViewModels;
+using System.Collections.Generic;
 
 namespace Stride.Assets.Presentation.AssetEditors.EntityHierarchyEditor.ViewModels
 {
@@ -71,7 +72,7 @@ namespace Stride.Assets.Presentation.AssetEditors.EntityHierarchyEditor.ViewMode
                     {
                         // Find this light probe in Quantum
                         var assetNode = editor.NodeContainer.GetOrCreateNode(lightProbe);
-                        var zeroCoefficients = new FastList<Color3>();
+                        var zeroCoefficients = new List<Color3>();
                         for (int i = 0; i < LightProbeGenerator.LambertHamonicOrder * LightProbeGenerator.LambertHamonicOrder; ++i)
                             zeroCoefficients.Add(default(Color3));
                         assetNode[nameof(LightProbeComponent.Coefficients)].Update(zeroCoefficients);

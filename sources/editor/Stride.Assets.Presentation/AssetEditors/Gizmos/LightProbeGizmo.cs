@@ -13,6 +13,7 @@ using Stride.Rendering.LightProbes;
 using Stride.Rendering.Materials;
 using Stride.Rendering.Materials.ComputeColors;
 using Stride.Shaders;
+using System.Runtime.InteropServices;
 
 namespace Stride.Assets.Presentation.AssetEditors.Gizmos
 {
@@ -77,7 +78,7 @@ namespace Stride.Assets.Presentation.AssetEditors.Gizmos
             base.Update();
 
             if (Component.Coefficients != null)
-                lightProbeMaterial.Passes[0].Parameters.Set(ComputeSphericalHarmonicsKeys.SphericalColors, Component.Coefficients.Count, ref Component.Coefficients.Items[0]);
+                lightProbeMaterial.Passes[0].Parameters.Set(ComputeSphericalHarmonicsKeys.SphericalColors, Component.Coefficients.Count, ref CollectionsMarshal.AsSpan(Component.Coefficients)[0]);
         }
 
         class ComputeSphericalHarmonics : ComputeValueBase<Color4>, IComputeColor

@@ -6,6 +6,7 @@ using Stride.Core.Mathematics;
 using Stride.Engine;
 using Stride.Graphics;
 using Stride.Rendering.Shadows;
+using System.Collections.Generic;
 
 namespace Stride.Rendering.Lights
 {
@@ -49,7 +50,7 @@ namespace Stride.Rendering.Lights
             LightCurrentCount = 0;
         }
 
-        public virtual void SetViews(FastList<RenderView> views)
+        public virtual void SetViews(List<RenderView> views)
         {
             Array.Resize(ref lightRanges, views.Count);
 

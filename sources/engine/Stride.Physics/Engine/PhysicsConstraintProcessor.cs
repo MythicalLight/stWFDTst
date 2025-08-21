@@ -7,6 +7,7 @@ using Stride.Core.Collections;
 using Stride.Core.Diagnostics;
 using Stride.Engine;
 using Stride.Games;
+using System.Collections.Generic;
 
 namespace Stride.Physics.Engine
 {
@@ -14,7 +15,7 @@ namespace Stride.Physics.Engine
     {
         private static readonly Logger logger = GlobalLogger.GetLogger(nameof(PhysicsConstraintProcessor));
 
-        private readonly FastList<PhysicsConstraintComponent> detachedComponents = new FastList<PhysicsConstraintComponent>();
+        private readonly List<PhysicsConstraintComponent> detachedComponents = new List<PhysicsConstraintComponent>();
 
         public PhysicsConstraintProcessor()
         {

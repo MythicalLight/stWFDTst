@@ -39,8 +39,8 @@ namespace Stride.Rendering.Compositing
 
         private readonly Logger logger = GlobalLogger.GetLogger(nameof(ForwardRenderer));
 
-        private readonly FastList<Texture> currentRenderTargets = new FastList<Texture>();
-        private readonly FastList<Texture> currentRenderTargetsNonMSAA = new FastList<Texture>();
+        private readonly List<Texture> currentRenderTargets = new List<Texture>();
+        private readonly List<Texture> currentRenderTargetsNonMSAA = new List<Texture>();
         private Texture currentDepthStencil;
         private Texture currentDepthStencilNonMSAA;
 
@@ -472,7 +472,8 @@ namespace Stride.Rendering.Compositing
         private void ResolveMSAA(RenderDrawContext drawContext)
         {
             // Resolve render targets
-            currentRenderTargetsNonMSAA.Resize(currentRenderTargets.Count, false);
+            //currentRenderTargetsNonMSAA.Resize(currentRenderTargets.Count, false);
+            currentRenderTargetsNonMSAA.Capacity = Math.Max(currentRenderTargetsNonMSAA.Capacity, currentRenderTargets.Count);
             for (int index = 0; index < currentRenderTargets.Count; index++)
             {
                 var input = currentRenderTargets[index];
@@ -597,7 +598,7 @@ namespace Stride.Rendering.Compositing
                 {
                     // Run post effects
                     // Note: OpaqueRenderStage can't be null otherwise colorTargetIndex would be -1
-                    PostEffects.Draw(drawContext, OpaqueRenderStage.OutputValidator, renderTargets.Items, depthStencil, viewOutputTarget);
+                    PostEffects.Draw(drawContext, OpaqueRenderStage.OutputValidator, CollectionsMarshal.AsSpan(renderTargets), depthStencil, viewOutputTarget); // renderTargets.Items
                 }
                 else
                 {
@@ -687,7 +688,7 @@ namespace Stride.Rendering.Compositing
                                     }
                                 }
 
-                                drawContext.CommandList.SetRenderTargets(currentDepthStencil, currentRenderTargets.Count, currentRenderTargets.Items);
+                                drawContext.CommandList.SetRenderTargets(currentDepthStencil, currentRenderTargets.Count, CollectionsMarshal.AsSpan(currentRenderTargets)); // currentRenderTargets.Items
 
                                 if (!hasPostEffects && !isWindowsMixedReality) // need to change the viewport between each eye
                                 {
@@ -746,7 +747,7 @@ namespace Stride.Rendering.Compositing
 
                     using (drawContext.PushRenderTargetsAndRestore())
                     {
-                        drawContext.CommandList.SetRenderTargets(currentDepthStencil, currentRenderTargets.Count, currentRenderTargets.Items);
+                        drawContext.CommandList.SetRenderTargets(currentDepthStencil, currentRenderTargets.Count, CollectionsMarshal.AsSpan(currentRenderTargets)); // currentRenderTargets.Items
 
                         // Clear render target and depth stencil
                         Clear?.Draw(drawContext);
@@ -840,7 +841,8 @@ namespace Stride.Rendering.Compositing
 
             var renderTargets = OpaqueRenderStage.OutputValidator.RenderTargets;
 
-            currentRenderTargets.Resize(renderTargets.Count, false);
+            //currentRenderTargets.Resize(renderTargets.Count, false);
+            currentRenderTargets.Capacity = Math.Max(currentRenderTargets.Capacity, renderTargets.Count);
 
             for (int index = 0; index < renderTargets.Count; index++)
             {

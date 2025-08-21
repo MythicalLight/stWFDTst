@@ -1,6 +1,7 @@
 // Copyright (c) .NET Foundation and Contributors (https://dotnetfoundation.org/ & https://stride3d.net) and Silicon Studio Corp. (https://www.siliconstudio.co.jp)
 // Distributed under the MIT license. See the LICENSE.md file in the project root for more information.
 using System;
+using System.Runtime.InteropServices;
 using Stride.Core.Mathematics;
 
 namespace Stride.Animations
@@ -15,7 +16,7 @@ namespace Stride.Animations
             var currentIndex = channel.CurrentIndex;
 
             var keyFrames = channel.Curve.KeyFrames;
-            var keyFramesItems = keyFrames.Items;
+            var keyFramesItems = CollectionsMarshal.AsSpan(keyFrames);
             var keyFramesCount = keyFrames.Count;
 
             // Extract data

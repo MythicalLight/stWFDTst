@@ -12,6 +12,7 @@ using Stride.Core.Serialization.Contents;
 using Stride.Updater;
 using Stride.Animations;
 using Stride.Rendering;
+using System.Runtime.InteropServices;
 
 namespace Stride.Assets.Models
 {
@@ -158,7 +159,7 @@ namespace Stride.Assets.Models
                             var animationKeys = animationKeysSet.ToList();
                             animationKeys.Sort();
 
-                            var animationOperations = new FastList<AnimationOperation>();
+                            var animationOperations = new List<AnimationOperation>();
 
                             var combinedAnimationClip = new AnimationClip();
 
@@ -244,8 +245,8 @@ namespace Stride.Assets.Models
                                     for (int i = 0; i < keyFrames.Count; ++i)
                                     {
                                         if (parentNodeIndex == 0)
-                                            keyFrames.Items[i].Value -= PivotPosition;
-                                        keyFrames.Items[i].Value *= ScaleImport;
+                                            CollectionsMarshal.AsSpan(keyFrames)[i].Value -= PivotPosition;
+                                        CollectionsMarshal.AsSpan(keyFrames)[i].Value *= ScaleImport;
                                     }
                                 }
                                 animationClip.AddCurve($"[ModelComponent.Key].Skeleton.NodeTransformations[{skeletonMapping.SourceToTarget[nodeIndex]}]." + channelName, curve);

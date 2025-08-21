@@ -2,6 +2,7 @@
 // Distributed under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using System;
+using System.Runtime.InteropServices;
 using Stride.Core.Mathematics;
 
 namespace Stride.Animations
@@ -16,8 +17,13 @@ namespace Stride.Animations
             var currentIndex = channel.CurrentIndex;
 
             var keyFrames = channel.Curve.KeyFrames;
-            var keyFramesItems = keyFrames.Items;
+            //var keyFramesItems = keyFrames.Items;
+            //var keyFramesCount = keyFrames.Count;
+
+            //var keyFrspan = CollectionsMarshal.AsSpan(keyFrames); // EDITING !!!!
+            var keyFramesItems = CollectionsMarshal.AsSpan(keyFrames);
             var keyFramesCount = keyFrames.Count;
+
 
             // Extract data
             int timeStart = keyFrames[currentIndex + 0].Time.Ticks;

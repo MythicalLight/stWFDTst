@@ -7,6 +7,7 @@ using Stride.Core.Collections;
 using Stride.Core.Mathematics;
 using Stride.Engine.Design;
 using Stride.Rendering.LightProbes;
+using System.Collections.Generic;
 
 namespace Stride.Engine
 {
@@ -19,6 +20,6 @@ namespace Stride.Engine
     {
         [Display(Browsable = false)]
         [NonIdentifiableCollectionItems]
-        public FastList<Color3> Coefficients { get; set; }
+        public List<Color3> Coefficients { get; set; }
     }
 }

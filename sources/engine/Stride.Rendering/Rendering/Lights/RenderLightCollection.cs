@@ -4,13 +4,14 @@
 using Stride.Core;
 using Stride.Core.Collections;
 using Stride.Engine;
+using System.Collections.Generic;
 
 namespace Stride.Rendering.Lights
 {
     /// <summary>
     /// A list of <see cref="RenderLight"/> for a specified <see cref="RenderGroupMask"/>.
     /// </summary>
-    public class RenderLightCollection : FastList<RenderLight>
+    public class RenderLightCollection : List<RenderLight>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="RenderLightCollection"/> class.

@@ -23,5 +23,42 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Rendering\Images\FogVolume\FogVolumeFX.sdfx.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolume\FogVolumeShader.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolume\PostEffectBoundingRay.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolume\VolumeMinMaxShaderFog.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VolumeMinMaxShaderFog.sdsl</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Rendering\Images\FogVolume\FogVolumeFX.sdfx">
+      <LastGenOutput>FogVolumeFX.sdfx.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolume\FogVolumeShader.sdsl">
+      <LastGenOutput>FogVolumeShader.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolume\PostEffectBoundingRay.sdsl">
+      <LastGenOutput>PostEffectBoundingRay.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolume\VolumeMinMaxShaderFog.sdsl">
+      <LastGenOutput>VolumeMinMaxShaderFog.sdsl.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(StrideSdkTargets)" />
 </Project>

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Stride.Core;
 using Stride.Core.Annotations;
 using Stride.Core.Collections;
@@ -220,7 +221,7 @@ namespace Stride.Engine
     {
         protected readonly Dictionary<TComponent, TData> ComponentDatas = new Dictionary<TComponent, TData>();
         private readonly HashSet<Entity> reentrancyCheck = new HashSet<Entity>();
-        private readonly FastList<TypeInfo> checkRequiredTypes = new FastList<TypeInfo>();
+        private readonly List<TypeInfo> checkRequiredTypes = new List<TypeInfo>();
 
         protected EntityProcessor([NotNull] params Type[] requiredAdditionalTypes)
             : base(typeof(TComponent), requiredAdditionalTypes)
@@ -358,7 +359,7 @@ namespace Stride.Engine
                 var componentType = components[i].GetType().GetTypeInfo();
                 for (var j = checkRequiredTypes.Count - 1; j >= 0; j--)
                 {
-                    if (checkRequiredTypes.Items[j].IsAssignableFrom(componentType))
+                    if (CollectionsMarshal.AsSpan(checkRequiredTypes)[j].IsAssignableFrom(componentType))
                     {
                         checkRequiredTypes.RemoveAt(j);
 

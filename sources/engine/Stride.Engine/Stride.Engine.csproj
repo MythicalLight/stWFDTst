@@ -33,6 +33,26 @@
     <ProjectReference Include="..\Stride.VirtualReality\Stride.VirtualReality.csproj" />
     <ProjectReference Include="..\Stride.Shaders.Compiler\Stride.Shaders.Compiler.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Engine\Processors\PostEffectBoundingRay.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Engine\Processors\VolumeMinMaxShader.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Engine\Processors\PostEffectBoundingRay.sdsl">
+      <LastGenOutput>PostEffectBoundingRay.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Engine\Processors\VolumeMinMaxShader.sdsl">
+      <LastGenOutput>VolumeMinMaxShader.sdsl.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(StrideSdkTargets)" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

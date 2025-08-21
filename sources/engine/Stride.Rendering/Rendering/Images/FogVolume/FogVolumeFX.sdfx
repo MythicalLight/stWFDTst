@@ -1,0 +1,9 @@
+namespace Stride.Rendering.Images
+{
+    effect FogVolumeFX
+    {
+        
+        using params FogVolumeKeys;
+        mixin FogVolumeShader<FogVolumeKeys.SampleCount>;
+    };
+}

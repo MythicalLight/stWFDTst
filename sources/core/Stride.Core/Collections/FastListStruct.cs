@@ -26,10 +26,10 @@ public struct FastListStruct<T> : IEnumerable<T>
         }
     }
 
-    public FastListStruct(FastList<T> fastList)
+    public FastListStruct(List<T> list) // now it is just a list struct
     {
-        Count = fastList.Count;
-        Items = fastList.Items;
+        Count = list.Count;
+        Items = CollectionsMarshal.AsSpan(list).ToArray();
     }
 
     public FastListStruct(T[] array)
@@ -139,9 +139,9 @@ public struct FastListStruct<T> : IEnumerable<T>
         return new Enumerator(Items, Count);
     }
 
-    public static implicit operator FastListStruct<T>(FastList<T> fastList)
+    public static implicit operator FastListStruct<T>(List<T> list)
     {
-        return new FastListStruct<T>(fastList);
+        return new FastListStruct<T>(list);
     }
 
     public static implicit operator FastListStruct<T>(T[] array)

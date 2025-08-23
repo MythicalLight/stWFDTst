@@ -288,7 +288,21 @@ namespace Stride.Rendering
 
                         // Fast clear, since it's cleared properly in Reset()
                         //sortedRenderNodes.Resize(renderViewStage.RenderNodes.Count, true);
-                        sortedRenderNodes.Capacity = Math.Max(sortedRenderNodes.Capacity, renderViewStage.RenderNodes.Count);
+                        //sortedRenderNodes.Capacity = Math.Max(sortedRenderNodes.Count, renderViewStage.RenderNodes.Count);
+
+
+                        if (sortedRenderNodes.Count > renderViewStage.RenderNodes.Count)
+                        {
+                            sortedRenderNodes.RemoveRange(renderViewStage.RenderNodes.Count, sortedRenderNodes.Count - renderViewStage.RenderNodes.Count);
+                        }
+                        else if (sortedRenderNodes.Count < renderViewStage.RenderNodes.Count)
+                        {
+                            int itemsToAdd = renderViewStage.RenderNodes.Count - sortedRenderNodes.Count;
+                            sortedRenderNodes.AddRange(new RenderNodeFeatureReference[itemsToAdd]);
+                        }
+
+
+
 
                         if (renderStage.SortMode != null)
                         {

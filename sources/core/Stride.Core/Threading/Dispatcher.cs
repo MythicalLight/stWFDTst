@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Reflection;
 #endif // PROFILING_SCOPES
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using Stride.Core.Collections;
 using Stride.Core.Diagnostics;
 
@@ -345,9 +346,9 @@ public static class Dispatcher
         Sort(collection.Items, 0, collection.Count, comparer);
     }
 
-    public static void Sort<T>(FastList<T> collection, IComparer<T> comparer)
+    public static void Sort<T>(List<T> collection, IComparer<T> comparer)
     {
-        Sort(collection.Items, 0, collection.Count, comparer);
+        Sort(CollectionsMarshal.AsSpan(collection).ToArray(), 0, collection.Count, comparer);
     }
 
     public static void Sort<T>(T[] collection, int index, int length, IComparer<T> comparer)

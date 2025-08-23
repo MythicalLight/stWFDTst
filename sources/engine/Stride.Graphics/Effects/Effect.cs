@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Stride.Core;
 using Stride.Core.Mathematics;
 using Stride.Core.Serialization;
@@ -109,7 +110,7 @@ namespace Stride.Graphics
             {
                 // it is fine if multiple threads do this at the same time (same result)
                 // we use ref to avoid reassigning to the list (which cause a Collection modified during enumeration exception)
-                UpdateResourceBindingKey(ref reflection.ResourceBindings.Items[i]);
+                UpdateResourceBindingKey(ref CollectionsMarshal.AsSpan(reflection.ResourceBindings)[i]); // reflection.ResourceBindings.Items[i]
             }
             foreach (var constantBuffer in reflection.ConstantBuffers)
             {

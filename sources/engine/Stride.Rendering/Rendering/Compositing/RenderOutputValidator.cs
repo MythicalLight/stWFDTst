@@ -80,7 +80,19 @@ namespace Stride.Rendering.Compositing
             if (validatedTargetCount < renderTargets.Count || hasChanged)
             {
                 //renderTargets.Resize(validatedTargetCount, false);
-                renderTargets.Capacity = Math.Max(renderTargets.Capacity, validatedTargetCount);
+                //renderTargets.Capacity = Math.Max(renderTargets.Count, validatedTargetCount);
+
+                if (renderTargets.Count > validatedTargetCount)
+                {
+                    renderTargets.RemoveRange(validatedTargetCount, renderTargets.Count - validatedTargetCount);
+                }
+                else if (renderTargets.Count < validatedTargetCount)
+                {
+                    int itemsToAdd = validatedTargetCount - renderTargets.Count;
+                    renderTargets.AddRange(new RenderTargetDescription[itemsToAdd]);
+                }
+
+
 
                 // Recalculate shader sources
                 ShaderSource = new ShaderMixinSource();

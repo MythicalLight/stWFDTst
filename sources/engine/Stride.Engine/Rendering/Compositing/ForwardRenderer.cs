@@ -473,8 +473,22 @@ namespace Stride.Rendering.Compositing
         {
             // Resolve render targets
             //currentRenderTargetsNonMSAA.Resize(currentRenderTargets.Count, false);
-            currentRenderTargetsNonMSAA.Capacity = Math.Max(currentRenderTargetsNonMSAA.Capacity, currentRenderTargets.Count);
-            for (int index = 0; index < currentRenderTargets.Count; index++)
+
+            //RESIZE functionality
+
+            if (currentRenderTargets.Count > currentRenderTargetsNonMSAA.Count)
+            {
+                currentRenderTargets.RemoveRange(currentRenderTargetsNonMSAA.Count, currentRenderTargets.Count - currentRenderTargetsNonMSAA.Count);
+            }
+            else if (currentRenderTargets.Count < currentRenderTargetsNonMSAA.Count)
+            {
+                    int itemsToAdd = currentRenderTargetsNonMSAA.Count - currentRenderTargets.Count;
+                    currentRenderTargets.AddRange(new Texture[itemsToAdd]);
+            }
+
+
+                //currentRenderTargetsNonMSAA.Capacity = Math.Max(currentRenderTargetsNonMSAA.Count, currentRenderTargets.Count);
+                for (int index = 0; index < currentRenderTargets.Count; index++)
             {
                 var input = currentRenderTargets[index];
 
@@ -842,7 +856,20 @@ namespace Stride.Rendering.Compositing
             var renderTargets = OpaqueRenderStage.OutputValidator.RenderTargets;
 
             //currentRenderTargets.Resize(renderTargets.Count, false);
-            currentRenderTargets.Capacity = Math.Max(currentRenderTargets.Capacity, renderTargets.Count);
+
+
+            if (currentRenderTargets.Count > renderTargets.Count)
+            {
+                currentRenderTargets.RemoveRange(renderTargets.Count, currentRenderTargets.Count - renderTargets.Count);
+            }
+            else if (currentRenderTargets.Count < renderTargets.Count)
+            {
+                int itemsToAdd = renderTargets.Count - currentRenderTargets.Count;
+                currentRenderTargets.AddRange(new Texture[itemsToAdd]);
+            }
+
+
+            //currentRenderTargets.Capacity = Math.Max(currentRenderTargets.Count, renderTargets.Count);
 
             for (int index = 0; index < renderTargets.Count; index++)
             {

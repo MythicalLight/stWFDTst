@@ -20,10 +20,10 @@ namespace Stride.Shaders
         public EffectReflection()
         {
             SamplerStates = new List<EffectSamplerStateBinding>();
-            ResourceBindings = new FastList<EffectResourceBindingDescription>();
+            ResourceBindings = new List<EffectResourceBindingDescription>();
             ConstantBuffers = new List<EffectConstantBufferDescription>();
             ShaderStreamOutputDeclarations = new List<ShaderStreamOutputDeclarationEntry>();
-            InputAttributes = new FastList<ShaderInputAttributeDescription>();
+            InputAttributes = new List<ShaderInputAttributeDescription>();
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Stride.Shaders
         /// Gets the parameter binding descriptions.
         /// </summary>
         /// <value>The resource bindings.</value>
-        public FastList<EffectResourceBindingDescription> ResourceBindings { get; set; }
+        public List<EffectResourceBindingDescription> ResourceBindings { get; set; }
 
         /// <summary>
         /// Gets the constant buffer descriptions (if any).
@@ -62,6 +62,6 @@ namespace Stride.Shaders
         /// <value>The stream output rasterized stream.</value>
         public int StreamOutputRasterizedStream { get; set; }
 
-        public FastList<ShaderInputAttributeDescription> InputAttributes { get; set; }
+        public List<ShaderInputAttributeDescription> InputAttributes { get; set; }
     }
 }

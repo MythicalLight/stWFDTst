@@ -17,7 +17,7 @@ namespace Stride.Rendering
     /// Manage several effect parameters (resources and data). A specific data and resource layout can be forced (usually by the consuming effect).
     /// </summary>
     [DataSerializer(typeof(ParameterCollection.Serializer))]
-    [DataSerializerGlobal(null, typeof(FastList<ParameterKeyInfo>))]
+    [DataSerializerGlobal(null, typeof(List<ParameterKeyInfo>))]
     [DebuggerTypeProxy(typeof(ParameterCollection.DebugView))]
     public class ParameterCollection
     {
@@ -28,7 +28,7 @@ namespace Stride.Rendering
         private ParameterCollectionLayout layout;
 
         // TODO: Switch to FastListStruct (for serialization)
-        private FastList<ParameterKeyInfo> parameterKeyInfos = new(4);
+        private List<ParameterKeyInfo> parameterKeyInfos = new(4);
 
         // Constants and resources
         [DataMemberIgnore]
@@ -43,7 +43,7 @@ namespace Stride.Rendering
         public int LayoutCounter = 1;
 
         [DataMemberIgnore]
-        public FastList<ParameterKeyInfo> ParameterKeyInfos => parameterKeyInfos;
+        public List<ParameterKeyInfo> ParameterKeyInfos => parameterKeyInfos;
 
         [DataMemberIgnore]
         public ParameterCollectionLayout Layout => layout;
@@ -158,9 +158,9 @@ namespace Stride.Rendering
             // Find existing first
             for (int i = 0; i < parameterKeyInfos.Count; ++i)
             {
-                if (parameterKeyInfos.Items[i].Key == parameterKey)
+                if (CollectionsMarshal.AsSpan(parameterKeyInfos)[i].Key == parameterKey)
                 {
-                    return parameterKeyInfos.Items[i].GetValueAccessor();
+                    return CollectionsMarshal.AsSpan(parameterKeyInfos)[i].GetValueAccessor();
                 }
             }
 
@@ -557,7 +557,7 @@ namespace Stride.Rendering
             var layoutParameterKeyInfos = collectionLayout.LayoutParameterKeyInfos;
 
             // Do a first pass to measure constant buffer size
-            var newParameterKeyInfos = new FastList<ParameterKeyInfo>(Math.Max(1, parameterKeyInfos.Count));
+            var newParameterKeyInfos = new List<ParameterKeyInfo>(Math.Max(1, parameterKeyInfos.Count));
             newParameterKeyInfos.AddRange(parameterKeyInfos);
             var processedParameters = new bool[parameterKeyInfos.Count];
 
@@ -573,7 +573,7 @@ namespace Stride.Rendering
                     if (parameterKeyInfos[i].Key == layoutParameterKeyInfo.Key)
                     {
                         processedParameters[i] = true;
-                        newParameterKeyInfos.Items[i] = layoutParameterKeyInfo;
+                        CollectionsMarshal.AsSpan(newParameterKeyInfos)[i] = layoutParameterKeyInfo;
                         break;
                     }
                 }
@@ -591,17 +591,17 @@ namespace Stride.Rendering
                 if (parameterKeyInfo.Offset != -1)
                 {
                     // It's data
-                    newParameterKeyInfos.Items[i].Offset = bufferSize;
+                    CollectionsMarshal.AsSpan(newParameterKeyInfos)[i].Offset = bufferSize;
 
                     var additionalSize = ComputeAlignedSizeMinusTrailingPadding(
-                        elementSize: newParameterKeyInfos.Items[i].Key.Size,
-                        newParameterKeyInfos.Items[i].Count);
+                        elementSize: CollectionsMarshal.AsSpan(newParameterKeyInfos)[i].Key.Size,
+                        CollectionsMarshal.AsSpan(newParameterKeyInfos)[i].Count);
                     bufferSize += additionalSize;
                 }
                 else if (parameterKeyInfo.BindingSlot != -1)
                 {
                     // It's a resource
-                    newParameterKeyInfos.Items[i].BindingSlot = resourceCount++;
+                    CollectionsMarshal.AsSpan(newParameterKeyInfos)[i].BindingSlot = resourceCount++;
                 }
             }
 
@@ -689,9 +689,9 @@ namespace Stride.Rendering
             // Find existing first
             for (int i = 0; i < parameterKeyInfos.Count; ++i)
             {
-                if (parameterKeyInfos.Items[i].Key == parameterKey)
+                if (CollectionsMarshal.AsSpan(parameterKeyInfos)[i].Key == parameterKey)
                 {
-                    return parameterKeyInfos.Items[i].GetObjectAccessor();
+                    return CollectionsMarshal.AsSpan(parameterKeyInfos)[i].GetObjectAccessor();
                 }
             }
 

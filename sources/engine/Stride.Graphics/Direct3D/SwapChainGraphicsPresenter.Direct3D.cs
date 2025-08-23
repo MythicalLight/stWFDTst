@@ -24,6 +24,7 @@
 #if STRIDE_GRAPHICS_API_DIRECT3D
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 using SharpDX;
 using SharpDX.DXGI;
 using SharpDX.Mathematics.Interop;
@@ -267,7 +268,7 @@ namespace Stride.Graphics
             backBuffer.OnDestroyed();
 
             // Manually update all children textures
-            var fastList = DestroyChildrenTextures(backBuffer);
+            var theList = DestroyChildrenTextures(backBuffer);
 
 #if STRIDE_PLATFORM_UWP
             var swapChainPanel = Description.DeviceWindowHandle.NativeWindow as Windows.UI.Xaml.Controls.SwapChainPanel;
@@ -301,7 +302,7 @@ namespace Stride.Graphics
             // Put it in our back buffer texture
             backBuffer.InitializeFromImpl(backBufferTexture, Description.BackBufferFormat.IsSRgb());
 
-            foreach (var texture in fastList)
+            foreach (var texture in theList)
             {
                 texture.InitializeFrom(backBuffer, texture.ViewDescription);
             }
@@ -317,12 +318,12 @@ namespace Stride.Graphics
             DepthStencilBuffer.OnDestroyed();
 
             // Manually update all children textures
-            var fastList = DestroyChildrenTextures(DepthStencilBuffer);
+            var theList = DestroyChildrenTextures(DepthStencilBuffer);
 
             // Put it in our back buffer texture
             DepthStencilBuffer.InitializeFrom(newTextureDescription);
 
-            foreach (var texture in fastList)
+            foreach (var texture in theList)
             {
                 texture.InitializeFrom(DepthStencilBuffer, texture.ViewDescription);
             }
@@ -333,20 +334,20 @@ namespace Stride.Graphics
         /// </summary>
         /// <param name="parentTexture">Specified parent texture</param>
         /// <returns>A list of the children textures which were destroyed</returns>
-        private FastList<Texture> DestroyChildrenTextures(Texture parentTexture)
+        private List<Texture> DestroyChildrenTextures(Texture parentTexture)
         {
-            var fastList = new FastList<Texture>();
+            var theList = new List<Texture>();
             foreach (var resource in GraphicsDevice.Resources)
             {
                 var texture = resource as Texture;
                 if (texture != null && texture.ParentTexture == parentTexture)
                 {
                     texture.OnDestroyed();
-                    fastList.Add(texture);
+                    theList.Add(texture);
                 }
             }
 
-            return fastList;
+            return theList;
         }
 
         private SwapChain CreateSwapChain()

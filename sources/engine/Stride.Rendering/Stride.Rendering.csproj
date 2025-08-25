@@ -34,10 +34,11 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Rendering\Images\FogVolume\PostEffectBoundingRay.sdsl.cs">
+    <Compile Update="Rendering\Images\FogVolume\PostEffectBoundingRayFogV.sdsl.cs">
       <DesignTime>True</DesignTime>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
+      <DependentUpon>PostEffectBoundingRayFogV.sdsl</DependentUpon>
     </Compile>
     <Compile Update="Rendering\Images\FogVolume\VolumeMinMaxShaderFog.sdsl.cs">
       <DesignTime>True</DesignTime>
@@ -53,8 +54,8 @@
     <None Update="Rendering\Images\FogVolume\FogVolumeShader.sdsl">
       <LastGenOutput>FogVolumeShader.sdsl.cs</LastGenOutput>
     </None>
-    <None Update="Rendering\Images\FogVolume\PostEffectBoundingRay.sdsl">
-      <LastGenOutput>PostEffectBoundingRay.sdsl.cs</LastGenOutput>
+    <None Update="Rendering\Images\FogVolume\PostEffectBoundingRayFogV.sdsl">
+      <LastGenOutput>PostEffectBoundingRayFogV.sdsl.cs</LastGenOutput>
     </None>
     <None Update="Rendering\Images\FogVolume\VolumeMinMaxShaderFog.sdsl">
       <LastGenOutput>VolumeMinMaxShaderFog.sdsl.cs</LastGenOutput>

@@ -1,6 +1,6 @@
 namespace Stride.Rendering.Images
 {
-    shader FogVolumeShader<int SampleCount> : ImageEffectShader, PostEffectBoundingRay<SampleCount>, LightStream, NormalStream
+    shader FogVolumeShader<int SampleCount> : ImageEffectShader, PostEffectBoundingRayFogV<SampleCount>
     {
         //stage compose DirectLightGroup lightGroup;
 
@@ -16,11 +16,11 @@ namespace Stride.Rendering.Images
         {
             // Most shadow groups use these for normal scaled bias
             //ResetLightStream();
-            streams.NdotL = 1;
-            streams.normalWS = float3(0,1,0);
+            ////streams.NdotL = 1;
+            ////streams.normalWS = float3(0,1,0);
             // Needed by thickness computation (TODO: need a way to disable ComputeTransmittance when computing light shafts)
-            streams.meshNormalWS = 0.0f;
-            streams.PositionWS = 0.0f;
+            ////streams.meshNormalWS = 0.0f;
+            ////streams.PositionWS = 0.0f;
 
             float testValue = 1.0;
 

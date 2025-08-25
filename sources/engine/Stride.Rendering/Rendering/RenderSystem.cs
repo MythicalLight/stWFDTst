@@ -297,8 +297,8 @@ namespace Stride.Rendering
                         }
                         else if (sortedRenderNodes.Count < renderViewStage.RenderNodes.Count)
                         {
-                            int itemsToAdd = renderViewStage.RenderNodes.Count - sortedRenderNodes.Count;
-                            sortedRenderNodes.AddRange(new RenderNodeFeatureReference[itemsToAdd]);
+                            //int itemsToAdd = renderViewStage.RenderNodes.Count - sortedRenderNodes.Count;
+                            sortedRenderNodes.AddRange(new RenderNodeFeatureReference[renderViewStage.RenderNodes.Count - sortedRenderNodes.Count]);
                         }
 
 

@@ -4,7 +4,7 @@
 /// <remarks>
 /// TSampleCount: generic int - number of iterations.
 /// </remarks>
-shader PostEffectBoundingRay<int TSampleCount> : ImageEffectShader, DepthBase, Transformation, PositionStream4
+shader PostEffectBoundingRayFogV<int TSampleCount> : ImageEffectShader, DepthBase, Transformation, PositionStream4
 {
     float3 ComputeColorOut() 
     {

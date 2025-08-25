@@ -9,7 +9,7 @@ namespace Stride.Rendering.Images
 {
     public static class FogVolumeKeys
     {
-        public static readonly PermutationParameterKey<ShaderSource> LightGroup = ParameterKeys.NewPermutation<ShaderSource>();
+        //public static readonly PermutationParameterKey<ShaderSource> LightGroup = ParameterKeys.NewPermutation<ShaderSource>();
         public static readonly PermutationParameterKey<int> SampleCount = ParameterKeys.NewPermutation<int>();
     }
 }

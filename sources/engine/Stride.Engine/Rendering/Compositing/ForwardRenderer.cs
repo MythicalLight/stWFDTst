@@ -482,8 +482,8 @@ namespace Stride.Rendering.Compositing
             }
             else if (currentRenderTargets.Count < currentRenderTargetsNonMSAA.Count)
             {
-                    int itemsToAdd = currentRenderTargetsNonMSAA.Count - currentRenderTargets.Count;
-                    currentRenderTargets.AddRange(new Texture[itemsToAdd]);
+                    //int itemsToAdd = currentRenderTargetsNonMSAA.Count - currentRenderTargets.Count;
+                    currentRenderTargets.AddRange(new Texture[currentRenderTargetsNonMSAA.Count - currentRenderTargets.Count]);
             }
 
 
@@ -864,8 +864,8 @@ namespace Stride.Rendering.Compositing
             }
             else if (currentRenderTargets.Count < renderTargets.Count)
             {
-                int itemsToAdd = renderTargets.Count - currentRenderTargets.Count;
-                currentRenderTargets.AddRange(new Texture[itemsToAdd]);
+                //int itemsToAdd = renderTargets.Count - currentRenderTargets.Count;
+                currentRenderTargets.AddRange(new Texture[renderTargets.Count - currentRenderTargets.Count]);
             }
 
 

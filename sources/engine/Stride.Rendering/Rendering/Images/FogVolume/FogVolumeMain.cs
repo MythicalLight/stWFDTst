@@ -72,13 +72,14 @@ namespace Stride.Rendering.Images
             base.InitializeCore();
 
 
+            fogVolumeEffectShader = ToLoadAndUnload(new ImageEffectShader("FogVolumeFX"));
+
+
             minmaxVolumeEffectShader = new DynamicEffectInstance("VolumeMinMaxShaderFog");
             minmaxVolumeEffectShader.Initialize(Context.Services);
 
 
-            // Additive blending shader
-            applyFogShader = ToLoadAndUnload(new ImageEffectShader("FogVolumeFX"));
-            applyFogShader.BlendState = new BlendStateDescription(Blend.One, Blend.One);
+            
 
 
 

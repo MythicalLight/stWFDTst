@@ -88,8 +88,8 @@ namespace Stride.Rendering.Compositing
                 }
                 else if (renderTargets.Count < validatedTargetCount)
                 {
-                    int itemsToAdd = validatedTargetCount - renderTargets.Count;
-                    renderTargets.AddRange(new RenderTargetDescription[itemsToAdd]);
+                    //int itemsToAdd = validatedTargetCount - renderTargets.Count;
+                    renderTargets.AddRange(new RenderTargetDescription[validatedTargetCount - renderTargets.Count]); 
                 }
 
 

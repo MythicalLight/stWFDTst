@@ -1,0 +1,11 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <StrideNativePathLibsWindows>LibOVR.lib</StrideNativePathLibsWindows>
+  </PropertyGroup>
+
+  <!--
+  <ItemGroup>
+    <StrideNativePathLibsiOS Include="$(MSBuildThisFileDirectory)..\..\..\deps\GoogleVR\lib\iOS\libgvr.a;" />
+  </ItemGroup>
+  -->
+</Project>

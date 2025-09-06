@@ -1,4 +1,4 @@
-﻿// Copyright (c) .NET Foundation and Contributors (https://dotnetfoundation.org/ & https://stride3d.net) and Silicon Studio Corp. (https://www.siliconstudio.co.jp)
+// Copyright (c) .NET Foundation and Contributors (https://dotnetfoundation.org/ & https://stride3d.net) and Silicon Studio Corp. (https://www.siliconstudio.co.jp)
 // Distributed under the MIT license. See the LICENSE.md file in the project root for more information.
 
 using Stride.Core.Diagnostics;
@@ -16,6 +16,8 @@ namespace Stride.Rendering.Compositing
         public static readonly ProfilingKey MsaaResolve = new ProfilingKey(Compositing, "MSAA Resolve");
 
         public static readonly ProfilingKey LightShafts = new ProfilingKey(Compositing, "LightShafts");
+
+        public static readonly ProfilingKey FogVolumes = new ProfilingKey(Compositing, "FogVolumes");
 
         public static readonly ProfilingKey GBuffer = new ProfilingKey(Compositing, "GBuffer");
     }

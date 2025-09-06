@@ -1,0 +1,19 @@
+namespace Stride.Rendering.Images
+{
+    shader FogAdditiveShader<bool TColor> : ImageEffectShader, Texturing
+    {
+        cbuffer PerFrame
+        {
+            [Color]
+            stage float3 LightColor;
+        }
+
+        stage override float4 Shading()
+        {
+            float4 color = Texture0.Sample(LinearSampler, streams.TexCoord);
+            if(TColor)
+                return float4(color.rgb * LightColor, 1);
+            return float4(color.rrr * LightColor, 1);
+        }
+    };
+}

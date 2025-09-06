@@ -6,4 +6,31 @@
 // and re-save the associated .sdfx.
 // </auto-generated>
 
-// Nothing to generate
+using System;
+using Stride.Core;
+using Stride.Rendering;
+using Stride.Graphics;
+using Stride.Shaders;
+using Stride.Core.Mathematics;
+using Buffer = Stride.Graphics.Buffer;
+
+namespace Stride.Rendering.Images
+{
+    internal static partial class ShaderMixins
+    {
+        internal partial class FogAdditiveFX  : IShaderMixinBuilder
+        {
+            public void Generate(ShaderMixinSource mixin, ShaderMixinContext context)
+            {
+                context.Mixin(mixin, "FogAdditiveShader", context.GetParam(FogAdditiveFXKeys.Color));
+            }
+
+            [System.Runtime.CompilerServices.ModuleInitializer]
+            internal static void __Initialize__()
+
+            {
+                ShaderMixinManager.Register("FogAdditiveFX", new FogAdditiveFX());
+            }
+        }
+    }
+}

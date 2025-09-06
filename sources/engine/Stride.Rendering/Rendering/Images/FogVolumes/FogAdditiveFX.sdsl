@@ -1,0 +1,8 @@
+namespace Stride.Rendering.Images
+{
+    effect FogAdditiveFX
+    {
+        using params FogAdditiveFXKeys;
+        mixin FogAdditiveShader<FogAdditiveFXKeys.Color>;
+    };
+}

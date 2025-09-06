@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Stride.Rendering.Rendering.Images.FogVolumes
+namespace Stride.Rendering.Images
 {
-    internal class FogAdditiveFXKeys
+    public static class FogAdditiveFXKeys
     {
+        public static readonly PermutationParameterKey<bool> Color = ParameterKeys.NewPermutation<bool>();
     }
 }

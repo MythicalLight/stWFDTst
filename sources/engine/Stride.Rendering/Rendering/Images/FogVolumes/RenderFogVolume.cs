@@ -1,12 +1,22 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stride.Core.Mathematics;
+using Stride.Rendering.Lights;
 
-namespace Stride.Rendering.Rendering.Images.FogVolumes
+namespace Stride.Rendering.Images
 {
-    internal class RenderFogVolume
+    public struct RenderFogVolume
     {
+        public RenderLight Light;
+        public IDirectLight Light2;
+        public int SampleCount;
+        public float DensityFactor;
+        public IReadOnlyList<RenderFogVolumeBoundingVolume> BoundingVolumes;
+        public bool SeparateBoundingVolumes;
+    }
+
+    public struct RenderFogVolumeBoundingVolume
+    {
+        public Matrix World;
+        public Model Model;
     }
 }

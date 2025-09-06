@@ -1,12 +1,53 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Stride.Core;
+using Stride.Core.Annotations;
+using Stride.Engine.Design;
+using Stride.Engine.Processors;
 
 namespace Stride.Engine
 {
-    internal class FogVolumeComponent
+    /// <summary>
+    /// The source for light shafts, should be placed on the same entity as the light component which will be used for light shafts
+    /// </summary>
+    [Display("Fog volume", Expand = ExpandRule.Always)]
+    [DataContract("FogVolumeComponent")]
+    [DefaultEntityComponentRenderer(typeof(FogVolumeProcessor))]
+    [ComponentCategory("Lights")]
+    public class FogVolumeComponent : ActivableEntityComponent
     {
+        /// <summary>
+        /// Density of the light shaft fog
+        /// </summary>
+        /// <userdoc>
+        /// Higher values produce brighter light shafts
+        /// </userdoc>
+        [Display("Density")]
+        public float DensityFactor { get; set; } = 0.002f;
+
+        /// <summary>
+        /// Number of samples taken per pixel
+        /// </summary>
+        /// <userdoc>
+        /// Higher sample counts produce better light shafts but use more GPU
+        /// </userdoc>
+        [DataMemberRange(1, 0)]
+        public int SampleCount { get; set; } = 16;
+
+        /// <summary>
+        /// If true, all bounding volumes will be drawn one by one.
+        /// </summary>
+        /// <remarks>
+        /// If this is off, the light shafts might be lower in quality if the bounding volumes overlap (in the same pixel). 
+        /// If this is on, and the bounding volumes overlap (in space), the light shafts inside the overlapping area will become twice as bright.
+        /// </remarks>
+        /// <userdoc>
+        /// This preserves light shaft quality when seen through separate bounding boxes, but uses more GPU
+        /// </userdoc>
+        [Display("Process bounding volumes separately")]
+        public bool SeparateBoundingVolumes { get; set; } = true;
     }
 }

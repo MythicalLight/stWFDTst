@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Stride.Shaders;
 
-namespace Stride.Rendering.Rendering.Images.FogVolumes
+namespace Stride.Rendering.Images
 {
-    internal class FogVolumesFXKeys
+    public static class FogVolumesFXKeys
     {
+        public static readonly PermutationParameterKey<ShaderSource> LightGroup = ParameterKeys.NewPermutation<ShaderSource>();
+        public static readonly PermutationParameterKey<int> SampleCount = ParameterKeys.NewPermutation<int>();
     }
 }

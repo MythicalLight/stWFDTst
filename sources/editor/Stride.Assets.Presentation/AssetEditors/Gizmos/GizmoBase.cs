@@ -47,6 +47,11 @@ namespace Stride.Assets.Presentation.AssetEditors.Gizmos
         public const RenderGroup LightShaftsGroup = PhysicsShapesGroup; // Reuse the same wireframe render feature
 
         /// <summary>
+        /// The entity group of the light shaft volume gizmo.
+        /// </summary>
+        public const RenderGroup FogVolumesGroup = PhysicsShapesGroup; // Reuse the same wireframe render feature
+
+        /// <summary>
         /// The default entity group of the gizmo.
         /// </summary>
         public const RenderGroupMask DefaultGroupMask = RenderGroupMask.Group0;

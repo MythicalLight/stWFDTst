@@ -6,4 +6,18 @@
 // and re-save the associated .sdfx.
 // </auto-generated>
 
-// Nothing to generate
+using System;
+using Stride.Core;
+using Stride.Rendering;
+using Stride.Graphics;
+using Stride.Shaders;
+using Stride.Core.Mathematics;
+using Buffer = Stride.Graphics.Buffer;
+
+namespace Stride.Rendering.Images
+{
+    public static partial class FogAdditiveShaderKeys
+    {
+        public static readonly ValueParameterKey<Color3> LightColor = ParameterKeys.NewValue<Color3>();
+    }
+}

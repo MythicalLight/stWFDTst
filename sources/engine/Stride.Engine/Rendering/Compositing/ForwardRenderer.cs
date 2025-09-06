@@ -391,6 +391,8 @@ namespace Stride.Rendering.Compositing
 
                             LightShafts?.Collect(context);
 
+                            FogVolumes?.Collect(context);
+
                             PostEffects?.Collect(context);
                         }
                     }
@@ -417,6 +419,8 @@ namespace Stride.Rendering.Compositing
                     CollectView(context);
 
                     LightShafts?.Collect(context);
+
+                    FogVolumes?.Collect(context);
 
                     PostEffects?.Collect(context);
                 }
@@ -604,6 +608,14 @@ namespace Stride.Rendering.Compositing
                     using (drawContext.QueryManager.BeginProfile(Color.Green, CompositingProfilingKeys.LightShafts))
                     {
                         LightShafts.Draw(drawContext, depthStencil, renderTargets[colorTargetIndex]);
+                    }
+                }
+
+                if (FogVolumes != null)
+                {
+                    using (drawContext.QueryManager.BeginProfile(Color.Green, CompositingProfilingKeys.FogVolumes))
+                    {
+                        FogVolumes.Draw(drawContext, depthStencil, renderTargets[colorTargetIndex]);
                     }
                 }
 

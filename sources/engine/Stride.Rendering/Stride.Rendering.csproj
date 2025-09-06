@@ -23,5 +23,57 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Rendering\Images\FogVolumes\FogAdditiveFX.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolumes\FogAdditiveShader.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolumes\FogPostFXBoundingRay.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolumes\FogVolumeMinMaxShader.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolumes\FogVolumesFX.sdfx.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Rendering\Images\FogVolumes\FogVolumesShader.sdsl.cs">
+      <DesignTime>True</DesignTime>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Rendering\Images\FogVolumes\FogAdditiveFX.sdsl">
+      <LastGenOutput>FogAdditiveFX.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolumes\FogAdditiveShader.sdsl">
+      <LastGenOutput>FogAdditiveShader.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolumes\FogPostFXBoundingRay.sdsl">
+      <LastGenOutput>FogPostFXBoundingRay.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolumes\FogVolumeMinMaxShader.sdsl">
+      <LastGenOutput>FogVolumeMinMaxShader.sdsl.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolumes\FogVolumesFX.sdfx">
+      <LastGenOutput>FogVolumesFX.sdfx.cs</LastGenOutput>
+    </None>
+    <None Update="Rendering\Images\FogVolumes\FogVolumesShader.sdsl">
+      <LastGenOutput>FogVolumesShader.sdsl.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
   <Import Project="$(StrideSdkTargets)" />
 </Project>

@@ -89,6 +89,11 @@ namespace Stride.Rendering.Compositing
         public LightShafts LightShafts { get; set; }
 
         /// <summary>
+        /// Fog volumes effect
+        /// </summary>
+        public FogVolumes FogVolumes { get; set; }
+
+        /// <summary>
         /// Virtual Reality related settings
         /// </summary>
         public VRRendererSettings VRSettings { get; set; } = new VRRendererSettings();

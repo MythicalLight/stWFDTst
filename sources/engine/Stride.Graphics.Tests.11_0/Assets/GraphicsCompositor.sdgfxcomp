@@ -119,6 +119,7 @@ SharedRenderers:
         GBufferRenderStage: ref!! 48b23041-b222-4549-879a-ded8a76bd65b
         PostEffects: !PostProcessingEffects ref!! a6af0de6-da56-46cf-ab6d-7cca25684c92
         LightShafts: null
+        FogVolumes: null
         VRSettings:
             Enabled: false
             RequiredApis: {}

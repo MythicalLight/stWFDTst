@@ -81,6 +81,7 @@ SharedRenderers:
         GBufferRenderStage: null
         PostEffects: null
         LightShafts: null
+        FogVolumes: null
         VRSettings:
             Enabled: false
             RequiredApis: {}

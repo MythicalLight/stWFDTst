@@ -123,6 +123,9 @@ SharedRenderers:
         LightShafts*:
             LightBufferDownsampleLevel: 2
             BoundingVolumeBufferDownsampleLevel: 8
+        FogVolumes*:
+            LightBufferDownsampleLevel: 2
+            BoundingVolumeBufferDownsampleLevel: 8
         VRSettings:
             Enabled: false
             RequiredApis: {}
